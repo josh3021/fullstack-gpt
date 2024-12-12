@@ -1,20 +1,20 @@
-from datetime import datetime
-
 import streamlit as st
 
-today = datetime.today().strftime('%H:%M:%S')
-
-st.title(today)
-
-model = st.selectbox(
-    "Choose your model!",
-    ("GPT-3", "GPT-4",),
+st.set_page_config(
+    page_title="FullstackGPT Home",
+    page_icon="🤖",
+    layout="wide",
 )
 
-st.write(model)
+st.title('Home')
 
-name = st.text_input("Enter your name")
-st.write(f"Hello {name or 'Anonymous'}!")
+with st.sidebar:
+    st.title('Sidebar')
 
-value = st.slider('temperature', min_value=0.1, max_value=1.0)
-st.write(value)
+tab_one, tab_two = st.tabs(["A", "B"])
+
+with tab_one:
+    st.write("This is tab A")
+
+with tab_two:
+    st.write("This is tab B")
