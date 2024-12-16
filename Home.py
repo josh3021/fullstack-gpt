@@ -6,15 +6,19 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title('Home')
-
-with st.sidebar:
-    st.title('Sidebar')
-
-tab_one, tab_two = st.tabs(["A", "B"])
-
-with tab_one:
-    st.write("This is tab A")
-
-with tab_two:
-    st.write("This is tab B")
+st.markdown(
+    """
+    # Hello!
+                
+    Welcome to my FullstackGPT Portfolio!
+                
+    Here are the apps I made:
+                
+    - [ ] [DocumentGPT](/DocumentGPT)
+    - [ ] [PrivateGPT](/PrivateGPT)
+    - [ ] [QuizGPT](/QuizGPT)
+    - [ ] [SiteGPT](/SiteGPT)
+    - [ ] [MeetingGPT](/MeetingGPT)
+    - [ ] [InvestorGPT](/InvestorGPT)
+    """
+)
