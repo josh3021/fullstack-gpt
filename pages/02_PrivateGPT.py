@@ -1,8 +1,8 @@
 import streamlit as st
 from langchain.callbacks.base import BaseCallbackHandler
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOllama
 from langchain.document_loaders import UnstructuredFileLoader
-from langchain.embeddings import CacheBackedEmbeddings, OpenAIEmbeddings
+from langchain.embeddings import CacheBackedEmbeddings, OllamaEmbeddings
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema.runnable import RunnableLambda, RunnablePassthrough
@@ -15,6 +15,8 @@ st.set_page_config(
     page_icon="🔏",
     layout="wide",
 )
+
+model = 'llama2-uncensored'
 
 
 class ChatCallbackHanlder (BaseCallbackHandler):
@@ -32,9 +34,9 @@ class ChatCallbackHanlder (BaseCallbackHandler):
         self.message_box.markdown(self.message)
 
 
-llm = ChatOpenAI(
+llm = ChatOllama(
+    model=model,
     temperature=0.1,
-    streaming=True,
     callbacks=[
         ChatCallbackHanlder(),
     ]
@@ -65,7 +67,9 @@ def embed_file(file):
     )
     loader = UnstructuredFileLoader('./files/chapter_one.txt')
     docs = loader.load_and_split(text_splitter=splitter)
-    embeddiings = OpenAIEmbeddings()
+    embeddiings = OllamaEmbeddings(
+        model=model
+    )
     cache_embeddings = CacheBackedEmbeddings.from_bytes_store(
         embeddiings, cache_dir)
     vectorstore = FAISS.from_documents(docs, cache_embeddings)
@@ -127,6 +131,8 @@ st.markdown(
 with st.sidebar:
     file = st.file_uploader('Upload a .txt, .pdf, or .docx file', type=[
         'txt', 'pdf', 'docx'])
+    model = st.selectbox('Select a model', [
+                         'llama2-uncensored', 'llama3.2:latest'])
 
 
 if file:
